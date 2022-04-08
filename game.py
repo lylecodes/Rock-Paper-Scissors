@@ -1,58 +1,45 @@
 #!/usr/bin/env python3
-from util import valid_rps_input, get_opponent_answer, evaluate_game, get_full_answers
+from util import get_answers, evaluate_game
 
-def main():
-    while True:
-        play_game_input = input("Would you like to play Rock, Paper, Scissors? (Y | N)\n")
-        if play_game_input.lower() == 'n':
-            quit()
-        elif play_game_input.lower() != 'y':
-            print("\nPlease enter y or n")
-        else:
-            break
-
-    print("\nFirst to win 3 games wins!\n")
-
+def run_game():
     player_score = 0
     opponent_score = 0
     num_of_rounds = 0
+    
+    print("\nFirst to win 3 games wins!\n")
 
     while num_of_rounds < 3:
-        player_answer = input("Choose Rock, Paper, or Scissors (R | P | S)\n").lower()
+        player_input = int(input("Choose Rock[0], Paper[1], or Scissors[2]\n"))
 
-        if not valid_rps_input(player_answer):
-            print("\nPlease enter R, P, or S")
+        if player_input < 0 or player_input > 2:
             continue
         
-        opponent_answer = get_opponent_answer()
+        player_answer, opponent_answer = get_answers(player_input)
         
         result = evaluate_game(player_answer, opponent_answer)
+        
         print()
         
         if result == 'win':
-            print('You won')
+            print('You won!')
             player_score += 1
         elif result == 'loss':
-            print('You lost')
+            print('You lost :(')
             opponent_score += 1
         else:
-            print('Draw!')
-            
-        full_player_answer, full_opponent_answer = get_full_answers(player_answer, opponent_answer)
+            print('Match was a draw')
         
-        print(f"You chose {full_player_answer} and your opponent chose {full_opponent_answer}\n")
-
+        print(f"You chose {player_answer} and your opponent chose {opponent_answer}\n")
+        
         num_of_rounds += 1
-        
+
     if player_score > opponent_score:
         print("You won the game!")
     elif player_score < opponent_score:
         print("You lost the game :(")
     else:
         print("Nobody won...")
-        
-if __name__ == '__main__':
-    main()
+
 
 
 
